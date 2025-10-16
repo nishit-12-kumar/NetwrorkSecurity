@@ -1,4 +1,4 @@
-pandas 
+pandas
 numpy
 python-dotenv
 seaborn
@@ -8,9 +8,3 @@ dill
 flask
 pymongo
 certifi
-
-
-
-# -e .
-
-
