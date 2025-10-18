@@ -2,10 +2,11 @@ from NetworkSecurity.components.data_ingestion import DataIngestion
 from NetworkSecurity.exception.exception import NetworkSecurityException
 from NetworkSecurity.logging.logger import logging
 
-from NetworkSecurity.entity.config_entity import DataIngestionConfig , DataValidationConfig , DataTransformationConfig
+from NetworkSecurity.entity.config_entity import DataIngestionConfig , DataValidationConfig , DataTransformationConfig ,ModelTrainerConfig
 from NetworkSecurity.entity.config_entity import TrainingPipelineConfig 
 from NetworkSecurity.components.data_validation import DataValidation
 from NetworkSecurity.components.data_transformation import DataTransformation 
+from NetworkSecurity.components.model_trainer import ModelTrainer
 
 
 import sys
@@ -13,6 +14,7 @@ import sys
 
 if __name__ == "__main__":
     try:
+        ## Data Ingestion...
         trainingpipelineconfig = TrainingPipelineConfig()
 
         dataingestionconfig = DataIngestionConfig(trainingpipelineconfig)
@@ -25,6 +27,8 @@ if __name__ == "__main__":
         logging.info("Data Inititation Completed.")
         print(dataingestionartifact)
 
+
+        ## Data Validation...
         datavalidationconfig = DataValidationConfig(trainingpipelineconfig)
         data_validation =  DataValidation(dataingestionartifact , datavalidationconfig)
 
@@ -35,6 +39,8 @@ if __name__ == "__main__":
         logging.info("Data Validation Completed...")         
         print(datavalidationartifact)
 
+
+        ## Data Transformation...
         datatransformationconfig = DataTransformationConfig(trainingpipelineconfig)
         data_transformation =  DataTransformation(datavalidationartifact , datatransformationconfig)
 
@@ -44,6 +50,18 @@ if __name__ == "__main__":
 
         logging.info("Data Transformation Completed...")         
         print(datatransformationartifact)
+
+
+        ## Model Trainer...
+        modeltrainerconfig = ModelTrainerConfig(trainingpipelineconfig)
+        model_trainer =  ModelTrainer(model_trainer_config=modeltrainerconfig , data_transformation_artifact=datatransformationartifact)
+
+        logging.info("Initiate the Model Trainer...")
+
+        modeltrainerartifact = model_trainer.initiate_model_trainer()
+
+        logging.info("Model Trainer Completed...")         
+        print(modeltrainerartifact)
 
 
 
